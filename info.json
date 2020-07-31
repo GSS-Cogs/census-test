@@ -1,0 +1,44 @@
+{
+    "title": "CENSUS 2011: LC3409EW (General health by tenure by age) - Nomis - Official Labour Market Statistics",
+    "publisher": "office-for-national-statistics",
+    "description": "This dataset provides 2011 Census estimates that classify usual residents in households in England and Wales by general health, tenure and by age.",
+    
+    "landingPage": "https://www.nomisweb.co.uk/census/2011/lc3409ew",
+    "datasetNotes": [
+        "On the landing page "
+    ],
+    "published": "2014-09-09",
+    "families": [
+        "family-census-2011"
+    ],
+    "extract": {
+        "source": "NOMIS API",
+        "stage": ""
+    },
+    "transform": {
+        "stage": [
+            "To Do",
+            "Priority"
+        ],
+        "airtable": "",
+        "main_issue": 1,
+        "columns": {
+            "Period": {
+                "dimension": "http://purl.org/linked-data/sdmx/2009/dimension#refPeriod",
+                "value": "http://reference.data.gov.uk/id/{+period}"
+            },
+            "Geography Code": {
+                "dimension": "http://purl.org/linked-data/sdmx/2009/dimension#refArea",
+                "value": "http://statistics.data.gov.uk/id/statistical-geography/{geography_code}"
+            },
+            "Value": {
+                "unit": "http://gss-data.org.uk/def/concept/measurement-units/count",
+                "measure": "http://gss-data.org.uk/def/measure/residents",
+                "datatype": "integer"
+            }
+        },
+        "codelists": ["C_TENHUK11_NAME", "C_AGE_NAME", "C_HEALTH_NAME"]
+    },
+    "sizingNotes": "",
+    "notes": ""
+}
