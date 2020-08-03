@@ -43,11 +43,14 @@ from gssutils.metadata import namespaces, dcat, pmdcat, mimetype
 from gssutils.utils import pathify, ensure_list
 from rdflib import BNode, URIRef
 from rdflib.graph import Dataset as RDFDataset
+from urllib.parse import urljoin, urlparse
+from dateutil.parser import parse
+from gssutils.metadata import *
 
 def create(dataset, base_uri, dataset_id):
     catalog = dcat.Catalog()
     catalog.uri = urljoin(base_uri, 'catalog/datasets')
-    metadata_graph = urljoin(base_uri, f'graph/{dataset_id}-metadata')
+    metadata_graph = urljoin(base_uri, f'graph/{dataset_id}')
     catalog.set_graph(metadata_graph)
     catalog.record = pmdcat.CatalogRecord()
     catalog.record.uri = urljoin(base_uri, f'data/{dataset_id}-catalog-record')
@@ -80,7 +83,7 @@ ds_base = 'http://gss-data.org.uk'
 
 ds = pmdcat.Dataset('https://www.nomisweb.co.uk/census/2011/lc3409ew')
 ds.uri = urljoin(ds_base, f'data/{ds_id}')
-ds.graph = urljoin(ds_base, f'graph/{ds_id}/metadata')
+ds.graph = urljoin(ds_base, f'graph/{ds_id}')
 #ds.inGraph = urljoin(ds_base, f'graph/{ds_id}')
 ds.sparqlEndpoint = urljoin(ds_base, '/sparql')
 ds.modified = datetime.now()
@@ -91,7 +94,7 @@ ds.description = info['description']
 ds.issued = parse(info['published']).date()
 ds.landingPage = info['landingPage']
 ds.contactPoint = 'mailto:census.customerservices@ons.gov.uk'
-ds.publisher = GOV[info['published']]
+ds.publisher = GOV[info['publisher']]
 ds.rights = ""
 ds.license = ""
 
