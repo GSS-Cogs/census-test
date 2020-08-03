@@ -1,0 +1,5 @@
+Label,Notation,Parent Notation,Sort Priority
+Owned: Owned outright,owned-owned-outright,,1
+Owned: Owned with a mortgage or loan or shared ownership,owned-ownedw-with-a-mortgage-or-loan-or-shared-ownership,,2
+Rented: Social rented,rented-social-rented,,3
+Rented: Private rented or living rent free,rented-private-rented-or-living-rent-free,,4
