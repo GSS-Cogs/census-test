@@ -1,7 +1,7 @@
 {
-    "title": "CENSUS 2011: LC3409EW (General health by tenure by age) - Nomis - Official Labour Market Statistics",
+    "title": "CENSUS 2011 - LC3409EW Output Area (General health by tenure by age) - Nomis - Official Labour Market Statistics",
     "publisher": "office-for-national-statistics",
-    "description": "This dataset provides 2011 Census estimates that classify usual residents in households in England and Wales by general health, tenure and by age.",
+    "description": "This dataset provides 2011 Census estimates that classify usual residents in households in England and Wales by general health, tenure and by age. Full description at: https://www.nomisweb.co.uk/census/2011/lc3409ew.pdf",
     
     "landingPage": "https://www.nomisweb.co.uk/census/2011/lc3409ew",
     "datasetNotes": [
