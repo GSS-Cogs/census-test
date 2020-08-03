@@ -29,7 +29,7 @@
             },
             "Geography": {
                 "dimension": "http://purl.org/linked-data/sdmx/2009/dimension#refArea",
-                "value": "http://statistics.data.gov.uk/id/statistical-geography/{geography}"
+                "value": "http://statistics.data.gov.uk/id/statistical-geography/{geography}",
                 "description": "2011 Output Areas. Open linked data, geographical codes for areas of the UK"
             },
             "C_AGE_NAME": {
