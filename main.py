@@ -5,8 +5,9 @@ import pandas as pd
 import json
 from datetime import datetime
 
-#dataE = pd.read_csv("final_df_england.csv.gz", compression='gzip') 
-dataW = pd.read_csv("final_df_wales.csv.gz", compression='gzip')
+#dataE = pd.read_csv("final_df_england.csv.gz", compression='gzip', dtype='category') 
+dataW = pd.read_csv("final_df_wales.csv.gz", compression='gzip', dtype='category')
+dataW
 
 #----------------------------------------------------------------------------------------
 #joined_dat = pd.concat([dataE, dataW])
@@ -16,8 +17,7 @@ joined_dat = dataW
 #print('Wales: ' + str(dataW['DATE_NAME'].count()))
 #print('Joined: ' + str(joined_dat['DATE_NAME'].count()))
 
-#joined_dat = joined_dat[['DATE_NAME', 'GEOGRAPHY_CODE', 'C_TENHUK11_NAME', 'C_AGE_NAME', 'C_HEALTH_NAME', 'OBS_VALUE']]
-joined_dat = joined_dat[['DATE_NAME', 'GEOGRAPHY_CODE', 'C_TENHUK11_NAME', 'C_AGE_NAME', 'C_HEALTH_NAME']]
+joined_dat = joined_dat[['GEOGRAPHY_CODE', 'C_TENHUK11_NAME', 'C_AGE_NAME', 'C_HEALTH_NAME', 'OBS_VALUE']]
 
 joined_dat = joined_dat.rename(columns={'OBS_VALUE': 'Value'})
 
