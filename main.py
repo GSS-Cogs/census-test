@@ -5,8 +5,8 @@ import pandas as pd
 import json
 from datetime import datetime
 
-dataE = pd.read_csv("final_df_england.csv") 
-dataW = pd.read_csv("final_df_wales.csv")
+#dataE = pd.read_csv("final_df_england.csv.gz", compression='gzip') 
+dataW = pd.read_csv("final_df_wales.csv.gz", compression='gzip')
 
 #----------------------------------------------------------------------------------------
 #joined_dat = pd.concat([dataE, dataW])
