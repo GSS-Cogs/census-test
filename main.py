@@ -5,6 +5,8 @@ import pandas as pd
 import json
 from datetime import datetime
 
+scraper = Scraper(seed='info.json')
+
 #dataE = pd.read_csv("final_df_england.csv.gz", compression='gzip', dtype='category') 
 dataW = pd.read_csv("final_df_wales.csv.gz", compression='gzip', dtype='category')
 dataW
@@ -38,87 +40,17 @@ out.mkdir(exist_ok=True)
 joined_dat.drop_duplicates().to_csv(out / csvName, index = False)
 
 # +
-import gssutils.scrapers
-from gssutils.metadata import namespaces, dcat, pmdcat, mimetype
-from gssutils.utils import pathify, ensure_list
-from rdflib import BNode, URIRef
-from rdflib.graph import Dataset as RDFDataset
-from urllib.parse import urljoin, urlparse
-from dateutil.parser import parse
-from gssutils.metadata import *
+from urllib.parse import urljoin
 
-def create(dataset, base_uri, dataset_id):
-    catalog = dcat.Catalog()
-    catalog.uri = urljoin(base_uri, 'catalog/datasets')
-    metadata_graph = urljoin(base_uri, f'graph/{dataset_id}')
-    catalog.set_graph(metadata_graph)
-    catalog.record = pmdcat.CatalogRecord()
-    catalog.record.uri = urljoin(base_uri, f'data/{dataset_id}-catalog-record')
-    catalog.record.set_graph(metadata_graph)
-    catalog.record.label = dataset.label + " Catalog Record"
-    catalog.record.metadataGraph = metadata_graph
-    catalog.record.issued = dataset.issued
-    catalog.record.modified = dataset.modified
-    catalog.record.primaryTopic = dataset
-    dataset = pmdcat.Dataset('https://www.nomisweb.co.uk/census/2011/lc3409ew')
-    # need to ensure that all the pointed to things are in the same graph
-    if hasattr(catalog.record.primaryTopic, 'distribution'):
-        for dist in ensure_list(catalog.record.primaryTopic.distribution):
-            dist.set_graph(metadata_graph)
-    dataset.graph = urljoin(base_uri, f'graph/{dataset_id}')
-    dataset.datasetContents = pmdcat.DataCube()
-    dataset.datasetContents.uri = urljoin(base_uri, f'data/{dataset_id}#dataset')
-    dataset.sparqlEndpoint = urljoin(base_uri, '/sparql')
-    quads = RDFDataset()
-    quads.namespace_manager = namespaces
-    catalog.add_to_dataset(quads)
-    return quads 
+scraper.dataset.family = 'census'
 
-
-# +
-info = json.load(Path('info.json').open())
-
-ds_id = pathify(os.environ.get('JOB_NAME', 'gss_data/covid-19/' + Path(os.getcwd()).name)) + '-' + pathify(csvName)
-ds_base = 'http://gss-data.org.uk'
-
-ds = pmdcat.Dataset('https://www.nomisweb.co.uk/census/2011/lc3409ew')
-ds.uri = urljoin(ds_base, f'data/{ds_id}')
-ds.graph = urljoin(ds_base, f'graph/{ds_id}')
-#ds.inGraph = urljoin(ds_base, f'graph/{ds_id}')
-ds.sparqlEndpoint = urljoin(ds_base, '/sparql')
-ds.modified = datetime.now()
-ds.theme = THEME['census-2011']
-ds.family = 'family-census-2011'
-ds.title = info['title']
-ds.description = info['description']
-ds.issued = parse(info['published']).date()
-ds.landingPage = info['landingPage']
-ds.contactPoint = 'mailto:census.customerservices@ons.gov.uk'
-ds.publisher = GOV[info['publisher']]
-ds.rights = ""
-ds.license = ""
-
-d = create(ds, ds_base, ds_id).serialize(format='trig')
-
-#display(d)
-# -
-
-with open(out / 'observations.csv-metadata.trig', 'wb') as metadata:
-     metadata.write(d)
-
+dataset_path = pathify(os.environ.get('JOB_NAME', 'gss_data/census-2011'))
+scraper.set_base_uri('http://gss-data.org.uk')
+scraper.set_dataset_id(dataset_path)
 csvw_transform = CSVWMapping()
 csvw_transform.set_csv(out / csvName)
 csvw_transform.set_mapping(json.load(open('info.json')))
-csvw_transform.set_dataset_uri(urljoin(ds_base, f'data/{ds_id}'))
+csvw_transform.set_dataset_uri(urljoin(scraper._base_uri, f'data/{scraper._dataset_id}'))
 csvw_transform.write(out / f'{csvName}-metadata.json')
-
-
-
-
-
-
-
-
-
-
-
+with open(out / f'{csvName}-metadata.trig', 'wb') as metadata:
+    metadata.write(scraper.generate_trig())
