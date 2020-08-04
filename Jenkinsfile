@@ -100,10 +100,92 @@ pipeline {
                 }
             }
         }
+        stage('Upload Cube') {
+            steps {
+                script {
+                    FAILED_STAGE = env.STAGE_NAME
+                    def pmd = pmdConfig("pmd")
+                    pmd.drafter
+                            .listDraftsets(Drafter.Include.OWNED)
+                            .findAll { it['display-name'] == env.JOB_NAME }
+                            .each {
+                                pmd.drafter.deleteDraftset(it.id)
+                            }
+                    String id = pmd.drafter.createDraftset(env.JOB_NAME).id
+                    for (graph in util.jobGraphs(pmd, id).unique()) {
+                        echo "Removing own graph ${graph}"
+                        pmd.drafter.deleteGraph(id, graph)
+                    }
+                    def outputFiles = findFiles(glob: "${DATASET_DIR}/out/*.ttl.gz")
+                    if (outputFiles.length == 0) {
+                        error(message: "No output RDF files found")
+                    } else {
+                        for (def observations : outputFiles) {
+                            String baseName = observations.name.substring(0, observations.name.lastIndexOf('.ttl.gz'))
+                            def graphs = readJSON(text: readFile(file: "out/${baseName}-graphs.json"))
+                            String datasetGraph = graphs.results.bindings[0].ds.value
+                            String metadataGraph = graphs.results.bindings[0].md.value
+                            echo "Adding ${observations.name}"
+                            pmd.drafter.addData(
+                                    id,
+                                    "${WORKSPACE}/out/${observations.name}",
+                                    "text/turtle",
+                                    "UTF-8",
+                                    datasetGraph
+                            )
+                            writeFile(file: "out/${baseName}-ds-prov.ttl", text: util.jobPROV(datasetGraph))
+                            pmd.drafter.addData(
+                                    id,
+                                    "${WORKSPACE}/out/${baseName}-ds-prov.ttl",
+                                    "text/turtle",
+                                    "UTF-8",
+                                    datasetGraph
+                            )
+                            echo "Adding metadata."
+                            pmd.drafter.addData(
+                                    id,
+                                    "${WORKSPACE}/out/${baseName}.csv-metadata.trig",
+                                    "application/trig",
+                                    "UTF-8",
+                                    metadataGraph
+                            )
+                            writeFile(file: "out/${baseName}-md-prov.ttl", text: util.jobPROV(metadataGraph))
+                            pmd.drafter.addData(
+                                    id,
+                                    "${WORKSPACE}/out/${baseName}-md-prov.ttl",
+                                    "text/turtle",
+                                    "UTF-8",
+                                    metadataGraph
+                            )
+                        }
+                    }
+                    for (def codelist : findFiles(glob: "out/codelists/*.ttl.gz")) {
+                        String baseName = codelist.name.substring(0, codelist.name.lastIndexOf('.ttl.gz'))
+                        String codelistGraph = "${pmd.config.base_uri}/graph/${util.slugise(env.JOB_NAME)}/${baseName}"
+                        echo "Adding local codelist ${baseName}"
+                        pmd.drafter.addData(
+                                id,
+                                "${WORKSPACE}/out/codelists/${codelist.name}",
+                                "text/turtle",
+                                "UTF-8",
+                                codelistGraph
+                        )
+                        writeFile(file: "out/codelists/${baseName}-prov.ttl", text: util.jobPROV(codelistGraph))
+                        pmd.drafter.addData(
+                                id,
+                                "${WORKSPACE}/out/codelists/${baseName}-prov.ttl",
+                                "text/turtle",
+                                "UTF-8",
+                                codelistGraph
+                        )
+                    }
+                }
+            }
+        }
     }
     post {
         always {
-            archiveArtifacts '*.ttl.gz'
+            archiveArtifacts 'out/'
         }
     }
 }
