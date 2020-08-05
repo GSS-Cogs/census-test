@@ -21,11 +21,18 @@ joined_dat = dataW
 
 joined_dat = joined_dat[['GEOGRAPHY_CODE', 'C_TENHUK11_NAME', 'C_AGE_NAME', 'C_HEALTH_NAME', 'OBS_VALUE']]
 
-joined_dat = joined_dat.rename(columns={'OBS_VALUE': 'Value'})
+joined_dat = joined_dat.rename(columns={
+    'GEOGRAPHY_CODE': 'Geography',
+    'C_TENHUK11_NAME': 'Tenure',
+    'C_AGE_NAME': 'Age',
+    'C_HEALTH_NAME': 'Health',
+    'OBS_VALUE': 'Value'
+})
 
-joined_dat['C_TENHUK11_NAME'] = joined_dat['C_TENHUK11_NAME'].apply(pathify)
-joined_dat['C_AGE_NAME'] = joined_dat['C_AGE_NAME'].apply(pathify)
-joined_dat['C_HEALTH_NAME'] = joined_dat['C_HEALTH_NAME'].apply(pathify)
+# +
+#joined_dat['C_TENHUK11_NAME'] = joined_dat['C_TENHUK11_NAME'].apply(pathify)
+#joined_dat['C_AGE_NAME'] = joined_dat['C_AGE_NAME'].apply(pathify)
+#joined_dat['C_HEALTH_NAME'] = joined_dat['C_HEALTH_NAME'].apply(pathify)
 
 # +
 # Have to add to metadata 
@@ -54,3 +61,6 @@ csvw_transform.set_dataset_uri(urljoin(scraper._base_uri, f'data/{scraper._datas
 csvw_transform.write(out / f'{csvName}-metadata.json')
 with open(out / f'{csvName}-metadata.trig', 'wb') as metadata:
     metadata.write(scraper.generate_trig())
+# -
+
+
