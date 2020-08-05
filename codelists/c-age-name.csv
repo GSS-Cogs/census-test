@@ -1,5 +1,5 @@
 Label,Notation,Parent Notation,Sort Priority
-Age 0 to 15,age-0-to-16,,1
-Age 16 to 49,age-16-to-50,,2
-Age 50 to 64,age-50-to-65,,3
-Age 65 and over,age-65-and-over,,4
+Age 0 to 15,Y0T15,,1
+Age 16 to 49,Y16T49,,2
+Age 50 to 64,Y50T64,,3
+Age 65 and over,Y_GE65,,4

@@ -1,6 +1,6 @@
 {
   "@context": "http://www.w3.org/ns/csvw",
-  "@id": "http://gss-data.org.uk/data/gss_data/covid-19/phe-covid-19-number-of-outbreaks-in-care-homes-management-information#schema",
+  "@id": "http://gss-data.org.uk/data/gss_data/census-2011#schema/c-health-name",
   "url": "c-health-name.csv",
   "tableSchema": {
     "columns": [
@@ -30,7 +30,7 @@
         },
         "required": false,
         "propertyUrl": "skos:broader",
-        "valueUrl": "http://gss-data.org.uk/data/gss_data/covid-19/phe-covid-19-number-of-outbreaks-in-care-homes-management-information#concept/c-health-name/{parent_notation}"
+        "valueUrl": "http://gss-data.org.uk/data/gss_data/census-2011#concept/c-health-name/{parent_notation}"
       },
       {
         "titles": "Sort Priority",
@@ -54,16 +54,15 @@
       {
         "virtual": true,
         "propertyUrl": "skos:inScheme",
-        "valueUrl": "http://gss-data.org.uk/data/gss_data/covid-19/phe-covid-19-number-of-outbreaks-in-care-homes-management-information#scheme/c-health-name"
+        "valueUrl": "http://gss-data.org.uk/data/gss_data/census-2011#scheme/c-health-name"
       }
     ],
     "primaryKey": "notation",
-    "aboutUrl": "http://gss-data.org.uk/data/gss_data/covid-19/phe-covid-19-number-of-outbreaks-in-care-homes-management-information#concept/c-health-name/{notation}"
+    "aboutUrl": "http://gss-data.org.uk/data/gss_data/census-2011#concept/c-health-name/{notation}"
   },
   "prov:hadDerivation": {
-    "@id": "http://gss-data.org.uk/data/gss_data/covid-19/phe-covid-19-number-of-outbreaks-in-care-homes-management-information#scheme/c-health-name",
+    "@id": "http://gss-data.org.uk/data/gss_data/census-2011#scheme/c-health-name",
     "@type": "skos:ConceptScheme",
-    "rdfs:label": "Region Type",
-    "skos:hasTopConcept": "http://gss-data.org.uk/data/gss_data/covid-19/phe-covid-19-number-of-outbreaks-in-care-homes-management-information#concept/c-health-name/all"
+    "rdfs:label": "Region Type"
   }
 }
