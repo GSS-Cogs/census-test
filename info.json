@@ -24,33 +24,17 @@
         "airtable": "",
         "main_issue": 1,
         "columns": {
-            "DATE_NAME": {
-                "dimension": "http://purl.org/linked-data/sdmx/2009/dimension#refPeriod",
-                "value": "http://reference.data.gov.uk/id/year/{+period}"
-            },
-            "GEOGRAPHY_CODE": {
-                "dimension": "http://purl.org/linked-data/sdmx/2009/dimension#refArea",
-                "value": "http://statistics.data.gov.uk/id/statistical-geography/{geography_code}",
+            "Geography": {
+                "parent": "http://purl.org/linked-data/sdmx/2009/dimension#refArea",
+                "value": "http://statistics.data.gov.uk/id/statistical-geography/{geography}",
                 "description": "2011 Output Areas. Open linked data, geographical codes for areas of the UK"
             },
-            "C_AGE_NAME": {
-                "dimension": "http://gss-data.org.uk/def/dimension/c_age_name",
-                "value": "http://gss-data.org.uk/def/concept/c_age_name/{c_age_name}",
-                "description": "Age is derived from the date of birth question and is a person's age at their last birthday, at 27 March 2011. Dates of birth that imply an age over 115 are treated as invalid and the person's age is imputed. Infants less than one year old are classified as 0 years of age."
-            },
-            "C_HEALTH_NAME": {
-                "dimension": "http://gss-data.org.uk/def/dimension/c_health_name",
-                "value": "http://gss-data.org.uk/def/concept/c_health_name/{c_health_name}",
-                "description": "General health is a self-assessment of a person's general state of health. People were asked to assess whether their health was very good, good, fair, bad or very bad. This assessment is not based on a person's health over any specified period of time."
-            },
-            "C_TENHUK11_NAME": {
-                "dimension": "http://gss-data.org.uk/def/dimension/c_tenhuk11_name",
-                "value": "http://gss-data.org.uk/def/concept/c_tenhuk11_name/{c_tenhuk11_name}",
-                "description": "Tenure provides information about whether a household rents or owns the accommodation that it occupies and, if rented, combines this with information about the type of landlord who owns or manages the accommodation. Owned: Owned with a mortgage or loan or shared ownership includes Owned: Owned with a mortgage or loan and Shared ownership (part owned and part rented). Rented: Private rented or living rent free' includes the groups Private rented: Other and Living rent free."
-            },
+            "Age": "Age is derived from the date of birth question and is a person's age at their last birthday, at 27 March 2011. Dates of birth that imply an age over 115 are treated as invalid and the person's age is imputed. Infants less than one year old are classified as 0 years of age.",
+            "Health": "General health is a self-assessment of a person's general state of health. People were asked to assess whether their health was very good, good, fair, bad or very bad. This assessment is not based on a person's health over any specified period of time.",
+            "Tenure": "Tenure provides information about whether a household rents or owns the accommodation that it occupies and, if rented, combines this with information about the type of landlord who owns or manages the accommodation. Owned: Owned with a mortgage or loan or shared ownership includes Owned: Owned with a mortgage or loan and Shared ownership (part owned and part rented). Rented: Private rented or living rent free' includes the groups Private rented: Other and Living rent free.",
             "Value": {
-                "unit": "http://gss-data.org.uk/def/concept/measurement-units/count",
-                "measure": "http://gss-data.org.uk/def/measure/residents",
+                "unit": "http://gss-data.org.uk/def/concept/measurement-units/residents",
+                "measure": "http://gss-data.org.uk/def/measure/count",
                 "datatype": "integer"
             }
         },
