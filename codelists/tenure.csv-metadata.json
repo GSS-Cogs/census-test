@@ -1,7 +1,7 @@
 {
   "@context": "http://www.w3.org/ns/csvw",
-  "@id": "http://gss-data.org.uk/data/gss_data/census-2011#schema/c-age-name",
-  "url": "c-age-name.csv",
+  "@id": "http://gss-data.org.uk/data/gss_data/census-2011#schema/tenure",
+  "url": "tenure.csv",
   "tableSchema": {
     "columns": [
       {
@@ -30,7 +30,7 @@
         },
         "required": false,
         "propertyUrl": "skos:broader",
-        "valueUrl": "http://gss-data.org.uk/data/gss_data/census-2011#concept/c-age-name/{parent_notation}"
+        "valueUrl": "http://gss-data.org.uk/data/gss_data/census-2011#concept/tenure/{parent_notation}"
       },
       {
         "titles": "Sort Priority",
@@ -54,15 +54,15 @@
       {
         "virtual": true,
         "propertyUrl": "skos:inScheme",
-        "valueUrl": "http://gss-data.org.uk/data/gss_data/census-2011#scheme/c-age-name"
+        "valueUrl": "http://gss-data.org.uk/data/gss_data/census-2011#scheme/tenure"
       }
     ],
     "primaryKey": "notation",
-    "aboutUrl": "http://gss-data.org.uk/data/gss_data/census-2011#concept/c-age-name/{notation}"
+    "aboutUrl": "http://gss-data.org.uk/data/gss_data/census-2011#concept/tenure/{notation}"
   },
   "prov:hadDerivation": {
-    "@id": "http://gss-data.org.uk/data/gss_data/census-2011#scheme/c-age-name",
+    "@id": "http://gss-data.org.uk/data/gss_data/census-2011#scheme/tenure",
     "@type": "skos:ConceptScheme",
-    "rdfs:label": "Region Type"
+    "rdfs:label": "Tenure"
   }
 }
