@@ -188,31 +188,6 @@ pipeline {
                 }
             }
         }
-        stage('Test draft dataset') {
-            agent {
-                docker {
-                    image 'gsscogs/gdp-sparql-tests'
-                    reuseNode true
-                    alwaysPull true
-                }
-            }
-            steps {
-                script {
-                    FAILED_STAGE = env.STAGE_NAME
-                    pmd = pmdConfig("pmd")
-                    String draftId = pmd.drafter.findDraftset(env.JOB_NAME, Drafter.Include.OWNED).id
-                    String endpoint = pmd.drafter.getDraftsetEndpoint(draftId)
-                    String dspath = util.slugise(env.JOB_NAME)
-                    String datasetGraph = "${pmd.config.base_uri}/graph/${dspath}"
-                    String metadataGraph = "${pmd.config.base_uri}/graph/${dspath}-metadata"
-                    String TOKEN = pmd.drafter.getToken()
-                    wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs: [[password: TOKEN, var: 'TOKEN']]]) {
-                        sh "sparql-test-runner -i -t /usr/local/tests/qb -s '${endpoint}?union-with-live=true&timeout=180' -k '${TOKEN}' -p \"dsgraph=<${datasetGraph}>\" -r 'reports/TESTS-${dspath}-qb.xml'"
-                        sh "sparql-test-runner -i -t /usr/local/tests/pmd/pmd4 -s '${endpoint}?union-with-live=true&timeout=180' -k '${TOKEN}' -p \"dsgraph=<${datasetGraph}>,mdgraph=<${metadataGraph}>\" -r 'reports/TESTS-${dspath}-pmd.xml'"
-                    }
-                }
-            }
-        }
         stage('Draftset') {
             parallel {
                 stage('Submit for review') {

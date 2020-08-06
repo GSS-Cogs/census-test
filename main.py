@@ -70,7 +70,7 @@ joined_dat['Value'] = pd.to_numeric(joined_dat['Value'], downcast='integer')
 csvName = 'observations.csv'
 out = Path('out')
 out.mkdir(exist_ok=True)
-joined_dat.drop_duplicates()[:10000].to_csv(out / (csvName + '.gz'), index = False, compression='gzip')
+joined_dat.drop_duplicates().to_csv(out / (csvName + '.gz'), index = False, compression='gzip')
 
 # +
 from urllib.parse import urljoin
