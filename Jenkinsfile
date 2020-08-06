@@ -59,13 +59,20 @@ pipeline {
                                     "csv"     : "out/${csv.name}",
                                     "metadata": "out/${csv.name}-metadata.trig",
                                     "csvw"    : "out/${csv.name}-metadata.json",
-                                    "output"  : "out/${baseName}"
+                                    "output"  : "out/${baseName}",
+                                    "base"    : baseName
                             ])
                         }
                     }
                     writeFile file: "graphs.sparql", text: """SELECT ?md ?ds { GRAPH ?md { [] <http://publishmydata.com/pmdcat#graph> ?ds } }"""
                     for (def dataset : datasets) {
-                        sh "csv2rdf -t '${dataset.csv}' -u '${dataset.csvw}' -m annotated | pigz > '${dataset.output}.ttl.gz'"
+                        if (fileExists(datasets.csv + '.gz')) {
+                            sh "pigz -dc '${dataset.csv}.gz' > /tmp/${dataset.base}.csv"
+                            sh "cp '${dataset.csvw} /tmp/${basename}-metadata.json"
+                            sh "csv2rdf -t '/tmp/${dataset.base}.csv' -u '/tmp/${dataset.base}-metadata.json' -m annotated | pigz > '${dataset.output}.ttl.gz'"
+                        } else {
+                            sh "csv2rdf -t '${dataset.csv}' -u '${dataset.csvw}' -m annotated | pigz > '${dataset.output}.ttl.gz'"
+                        }
                         sh "sparql --data='${dataset.metadata}' --query=graphs.sparql --results=JSON > '${dataset.output}-graphs.json'"
                     }
                 }
@@ -95,6 +102,7 @@ pipeline {
                     }
                     sh "mkdir -p out/codelists"
                     for (def codelist : codelists) {
+
                         sh "csv2rdf -t '${codelist.csv}' -u '${codelist.csvw}' -m annotated | pigz > '${codelist.output}.ttl.gz'"
                     }
                 }

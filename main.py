@@ -54,7 +54,7 @@ print(joined_dat['Tenure'].count())
 csvName = 'observations.csv'
 out = Path('out')
 out.mkdir(exist_ok=True)
-joined_dat.drop_duplicates().to_csv(out / csvName, index = False)
+joined_dat.drop_duplicates().to_csv(out / (csvName + '.gz'), index = False, compression='gzip')
 
 # +
 from urllib.parse import urljoin
@@ -68,7 +68,9 @@ csvw_transform = CSVWMapping()
 csvw_transform.set_csv(out / csvName)
 csvw_transform.set_mapping(json.load(open('info.json')))
 csvw_transform.set_dataset_uri(urljoin(scraper._base_uri, f'data/{scraper._dataset_id}'))
+joined_dat[:10].to_csv(out / csvName, index = False)
 csvw_transform.write(out / f'{csvName}-metadata.json')
+(out / csvName).
 with open(out / f'{csvName}-metadata.trig', 'wb') as metadata:
     metadata.write(scraper.generate_trig())
 # -
