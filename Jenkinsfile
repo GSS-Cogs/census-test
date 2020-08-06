@@ -64,7 +64,7 @@ pipeline {
                     }
                     writeFile file: "graphs.sparql", text: """SELECT ?md ?ds { GRAPH ?md { [] <http://publishmydata.com/pmdcat#graph> ?ds } }"""
                     for (def dataset : datasets) {
-                        if (fileExists(datasets.csv + '.gz')) {
+                        if (fileExists(dataset.csv + '.gz')) {
                             sh "pigz -dc '${dataset.csv}.gz' > /tmp/${dataset.base}.csv"
                             sh "cp '${dataset.csvw} /tmp/${basename}-metadata.json"
                             sh "csv2rdf -t '/tmp/${dataset.base}.csv' -u '/tmp/${dataset.base}-metadata.json' -m annotated | pigz > '${dataset.output}.ttl.gz'"
