@@ -45,8 +45,10 @@ joined_dat = joined_dat.rename(columns={
 # -
 
 # LIMIT OUTPUT JUST TO TEST THE JENKINS PIPELINE
-joined_dat = joined_dat[0:1000]
-joined_dat.head(60)
+print(joined_dat['Tenure'].count())
+joined_dat = joined_dat[0:10000]
+print(joined_dat['Tenure'].count())
+#joined_dat.head(60)
 
 # Output the data to CSV
 csvName = 'observations.csv'
