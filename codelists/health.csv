@@ -1,4 +1,5 @@
 Label,Notation,Parent Notation,Sort Priority
-Very good or good health,very-good-or-good-health,,1
-Fair health,fair-health,,2
-Bad or very bad health,bad-or-very-bad-health,,3
+"All categories: General Health",all-categories-general-health,,1
+Very good or good health,very-good-or-good-health,all-categories-general-health,2
+Fair health,fair-health,all-categories-general-health,3
+Bad or very bad health,bad-or-very-bad-health,all-categories-general-health,4

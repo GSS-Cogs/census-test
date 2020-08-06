@@ -1,5 +1,8 @@
 Label,Notation,Parent Notation,Sort Priority
-Owned: Owned outright,owned-owned-outright,,1
-Owned: Owned with a mortgage or loan or shared ownership,owned-owned-with-a-mortgage-or-loan-or-shared-ownership,,2
-Rented: Social rented,rented-social-rented,,3
-Rented: Private rented or living rent free,rented-private-rented-or-living-rent-free,,4
+"All categories: Tenure",all-categories-tenure,,1
+"Owned or shared ownership: Total",owned-or-shared-ownership-total,all-categories-tenure,2
+"Owned: Owned outright",owned-owned-outright,owned-or-shared-ownership-total,3
+"Owned: Owned with a mortgage or loan or shared ownership",owned-owned-with-a-mortgage-or-loan-or-shared-ownership,owned-or-shared-ownership-total,4
+"Rented or living rent free: Total",rented-or-living-rent-free-total,all-categories-tenure,5
+"Rented: Social rented",rented-social-rented,rented-or-living-rent-free-total,6
+"Rented: Private rented or living rent free",rented-private-rented-or-living-rent-free,rented-or-living-rent-free-total,7
