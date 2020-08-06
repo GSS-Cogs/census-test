@@ -52,17 +52,15 @@ pipeline {
                 script {
                     FAILED_STAGE = env.STAGE_NAME
                     def datasets = []
-                    for (def csv : findFiles(glob: "out/*.csv")) {
-                        if (fileExists("out/${csv.name}-metadata.json")) {
-                            String baseName = csv.name.take(csv.name.lastIndexOf('.'))
-                            datasets.add([
-                                    "csv"     : "out/${csv.name}",
-                                    "metadata": "out/${csv.name}-metadata.trig",
-                                    "csvw"    : "out/${csv.name}-metadata.json",
-                                    "output"  : "out/${baseName}",
-                                    "base"    : baseName
-                            ])
-                        }
+                    for (def csvw : findFiles(glob: "out/*.csv-metadata.json")) {
+                        String baseName = csvw.name.substring(0, csvw.name.lastIndexOf('.csv-metadata.json'))
+                        datasets.add([
+                                "csv"     : "out/${baseName}.csv",
+                                "metadata": "out/${baseName}.csv-metadata.trig",
+                                "csvw"    : "out/${csvw.name}",
+                                "output"  : "out/${baseName}",
+                                "base"    : baseName
+                        ])
                     }
                     writeFile file: "graphs.sparql", text: """SELECT ?md ?ds { GRAPH ?md { [] <http://publishmydata.com/pmdcat#graph> ?ds } }"""
                     for (def dataset : datasets) {
