@@ -65,12 +65,12 @@ dataset_path = pathify(os.environ.get('JOB_NAME', 'gss_data/census-2011'))
 scraper.set_base_uri('http://gss-data.org.uk')
 scraper.set_dataset_id(dataset_path)
 csvw_transform = CSVWMapping()
+joined_dat[:10].to_csv(out / csvName, index = False)
 csvw_transform.set_csv(out / csvName)
 csvw_transform.set_mapping(json.load(open('info.json')))
 csvw_transform.set_dataset_uri(urljoin(scraper._base_uri, f'data/{scraper._dataset_id}'))
-joined_dat[:10].to_csv(out / csvName, index = False)
 csvw_transform.write(out / f'{csvName}-metadata.json')
-(out / csvName).
+(out / csvName).unlink()
 with open(out / f'{csvName}-metadata.trig', 'wb') as metadata:
     metadata.write(scraper.generate_trig())
 # -
