@@ -7,17 +7,47 @@ from datetime import datetime
 
 scraper = Scraper(seed='info.json')
 
-#dataE = pd.read_csv("final_df_england.csv.gz", compression='gzip', dtype='category') 
-dataW = pd.read_csv("final_df_wales.csv.gz", compression='gzip', dtype='category')
-#dataW.head(5)
+england = pd.read_csv("final_df_england.csv.gz", compression='gzip', dtype='category')
+england['C_TENHUK11_NAME'].cat.rename_categories(pathify, inplace=True)
+england['C_HEALTH_NAME'].cat.rename_categories(pathify, inplace=True)
+england['C_AGE_NAME'].cat.rename_categories({
+    'Age 0 to 15': 'Y0T15',
+    'Age 16 to 49': 'Y16T49',
+    'Age 50 to 64': 'Y50T64',
+    'Age 65 and over': 'Y_GE65'
+}, inplace=True)
+wales = pd.read_csv("final_df_wales.csv.gz", compression='gzip', dtype='category')
 
-#----------------------------------------------------------------------------------------
-#joined_dat = pd.concat([dataE, dataW])
-joined_dat = dataW
-#----------------------------------------------------------------------------------------
-#print('England: ' + str(dataE['DATE_NAME'].count()))
-#print('Wales: ' + str(dataW['DATE_NAME'].count()))
-#print('Joined: ' + str(joined_dat['DATE_NAME'].count()))
+
+# +
+def concatenate(dfs):
+    """Concatenate while preserving categorical columns.
+
+    NB: We change the categories in-place for the input dataframes
+    taken from https://stackoverflow.com/questions/45639350/retaining-categorical-dtype-upon-dataframe-concatenation#answer-57809778
+    """
+    from pandas.api.types import union_categoricals
+    import pandas as pd
+    # Iterate on categorical columns common to all dfs
+    for col in set.intersection(
+        *[
+            set(df.select_dtypes(include='category').columns)
+            for df in dfs
+        ]
+    ):
+        # Generate the union category across dfs for this column
+        uc = union_categoricals([df[col] for df in dfs])
+        # Change to union category for all dataframes
+        for df in dfs:
+            df[col] = pd.Categorical(df[col].values, categories=uc.categories)
+    return pd.concat(dfs)
+
+joined_dat = concatenate([wales, england])
+# -
+
+for c in joined_dat:
+    display(c)
+    display(joined_dat[c].cat.categories)
 
 joined_dat = joined_dat[['GEOGRAPHY_CODE', 'C_TENHUK11_NAME', 'C_AGE_NAME', 'C_HEALTH_NAME', 'OBS_VALUE']]
 
@@ -28,15 +58,7 @@ joined_dat = joined_dat.rename(columns={
     'C_HEALTH_NAME': 'Health',
     'OBS_VALUE': 'Value'
 })
-
-# +
-#joined_dat.head(5)
-#print(list(joined_dat['Tenure'].unique()))
-
-# +
-#joined_dat['C_TENHUK11_NAME'] = joined_dat['C_TENHUK11_NAME'].apply(pathify)
-#joined_dat['C_AGE_NAME'] = joined_dat['C_AGE_NAME'].apply(pathify)
-#joined_dat['C_HEALTH_NAME'] = joined_dat['C_HEALTH_NAME'].apply(pathify)
+joined_dat['Value'] = pd.to_numeric(joined_dat['Value'], downcast='integer')
 
 # +
 # Have to add to metadata 
@@ -44,17 +66,11 @@ joined_dat = joined_dat.rename(columns={
 # Geography Type: 2011 output areas
 # -
 
-# LIMIT OUTPUT JUST TO TEST THE JENKINS PIPELINE
-print(joined_dat['Tenure'].count())
-joined_dat = joined_dat[0:10000]
-print(joined_dat['Tenure'].count())
-#joined_dat.head(60)
-
 # Output the data to CSV
 csvName = 'observations.csv'
 out = Path('out')
 out.mkdir(exist_ok=True)
-joined_dat.drop_duplicates().to_csv(out / (csvName + '.gz'), index = False, compression='gzip')
+joined_dat.drop_duplicates()[:10000].to_csv(out / (csvName + '.gz'), index = False, compression='gzip')
 
 # +
 from urllib.parse import urljoin
