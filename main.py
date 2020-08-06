@@ -9,7 +9,7 @@ scraper = Scraper(seed='info.json')
 
 #dataE = pd.read_csv("final_df_england.csv.gz", compression='gzip', dtype='category') 
 dataW = pd.read_csv("final_df_wales.csv.gz", compression='gzip', dtype='category')
-dataW
+#dataW.head(5)
 
 #----------------------------------------------------------------------------------------
 #joined_dat = pd.concat([dataE, dataW])
@@ -30,6 +30,10 @@ joined_dat = joined_dat.rename(columns={
 })
 
 # +
+#joined_dat.head(5)
+#print(list(joined_dat['Tenure'].unique()))
+
+# +
 #joined_dat['C_TENHUK11_NAME'] = joined_dat['C_TENHUK11_NAME'].apply(pathify)
 #joined_dat['C_AGE_NAME'] = joined_dat['C_AGE_NAME'].apply(pathify)
 #joined_dat['C_HEALTH_NAME'] = joined_dat['C_HEALTH_NAME'].apply(pathify)
@@ -39,6 +43,10 @@ joined_dat = joined_dat.rename(columns={
 # The Year: 2011
 # Geography Type: 2011 output areas
 # -
+
+# LIMIT OUTPUT JUST TO TEST THE JENKINS PIPELINE
+joined_dat = joined_dat[0:10]
+#joined_dat
 
 # Output the data to CSV
 csvName = 'observations.csv'
