@@ -40,6 +40,9 @@
         },
         "codelists": ["C_TENHUK11_NAME", "C_AGE_NAME", "C_HEALTH_NAME"]
     },
+    "load": {
+        "publish": true
+    },
     "sizingNotes": "",
     "notes": ""
 }

@@ -236,7 +236,6 @@ pipeline {
     post {
         always {
             archiveArtifacts 'out/'
-            junit allowEmptyResults: true, testResults: 'reports/**/*.xml'
         }
     }
 }
