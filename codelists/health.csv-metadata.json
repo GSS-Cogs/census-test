@@ -58,7 +58,7 @@
       }
     ],
     "primaryKey": "notation",
-    "aboutUrl": "http://gss-data.org.uk/data/gss_data/census-2011#concept/health{notation}"
+    "aboutUrl": "http://gss-data.org.uk/data/gss_data/census-2011#concept/health/{notation}"
   },
   "prov:hadDerivation": {
     "@id": "http://gss-data.org.uk/data/gss_data/census-2011#scheme/health",
